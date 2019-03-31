@@ -13,8 +13,7 @@ The API implementation is based NodeJS javascript built-in environment and Postg
 
 **A screenshot of the API results:**
 
-![movies](https://c1.staticflickr.com/3/2835/12680465824_c959772b64_t.jpg)
-
+![movies](https://user-images.githubusercontent.com/32243459/55294196-ddd08000-53f6-11e9-90ac-d2782ab8f953.png)
 
 
 ### 2. RESTful API (Frontend)
