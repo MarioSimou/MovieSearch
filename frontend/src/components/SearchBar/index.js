@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { filterMovies } from '../../actions'
 
 import './style.css'
 
@@ -9,17 +11,19 @@ class SearhBar extends Component {
     }
 
     onChangeInput = e => {
-        this.setState({ value , isFiltering : true })
-
+       
         const { value } = e.target
-        // update filtered object
-        this.props.filterMovies(value )
-        this.setState({ value , isFiltering : false })
+        // update state
+        this.setState({ value : value })
+        // filter movies
+        this.props.filterMovies( value )
+        // updates parent component that the user has started typing in the searchbar
+        this.props.hasTyped( true )
     }
 
     render() {
         const { value , isFiltering } = this.state
-        console.log(isFiltering)
+        // console.log(isFiltering)
         if( isFiltering ){
             return (
                 <div className="searchbar" style={ { gridTemplateColumns : `2.5% 97.5%` }}>
@@ -47,5 +51,8 @@ class SearhBar extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return { filteredObject : state.filterRootObject }
+}
 
-export default SearhBar
+export default connect( mapStateToProps , { filterMovies } )( SearhBar )
