@@ -19,4 +19,13 @@ const filterRootObject = ( movies = {} , action ) => {
     }
 }
 
-export default combineReducers({ loadMovies ,  filterRootObject })
+const isFilteringReducer = ( state = false , action ) => {
+    switch( action.type ){
+        case T.IS_FILTERING:
+            return action.payload.isFiltering
+        default:
+            return state
+    }
+}
+
+export default combineReducers({ loadMovies ,  filterRootObject , isFilteringReducer })

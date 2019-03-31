@@ -11,6 +11,11 @@ const requestMovies = () => async dispatch => {
     })
 }
 
+const isFiltering = b => ({
+    type: T.IS_FILTERING,
+    payload : { isFiltering : b }
+})
+
 const filterMovies = value => ( dispatch, getState ) => {
     const { loadMovies } = getState() 
     const movies = {}
@@ -22,10 +27,14 @@ const filterMovies = value => ( dispatch, getState ) => {
         }
     }  
 
+    // dispatch the filtered object
     dispatch({
         type : T.FILTER_MOVIES,
         payload : { filteredMovies : movies }
     })
+    // updates that the filtering process has stopped
+    dispatch( isFiltering( false ) )
+
 }
 
-export { requestMovies , filterMovies }
+export { requestMovies , filterMovies , isFiltering }

@@ -109,7 +109,10 @@ class Home extends Component {
                                 {this.renderCards( movies )}
                             </div>
                         )
-                        
+                    default:
+                            return(
+                                <div></div>
+                            )
                 }
             default:
                 break;
