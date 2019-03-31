@@ -1,0 +1,27 @@
+
+.ui.menu {
+    border-radius: 0;
+    background-color: #00897B;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.ui.menu  a.item > .film.icon {
+    font-size: 20px;
+}
+.ui.menu  a.item {
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 2px;
+    /* width: max-content !important;
+    margin: auto; */
+}
+
+.ui.menu  a.item::before{
+    background: none;
+}
+
+.ui.menu  a.item:hover {
+    color: #fff;
+    background : rgba(0,150,136 ,1);
+}

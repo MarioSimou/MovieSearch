@@ -1,0 +1,3 @@
+const REQUEST_MOVIES = 'REQUEST_MOVIES'
+
+export { REQUEST_MOVIES }

@@ -1,12 +1,18 @@
 const express = require('express'),
       app = express(),
-      port = process.env.PORT || 3000,
+      port = process.env.PORT || 3001,
       apiRoutes = require('./routes/index'),
       utilities = require('./util'),
       bodyParser = require('body-parser');
 
 // Content-Type : application/json
 app.use( bodyParser.json( ) )
+
+// middleware
+app.use( ( req , res , next ) => {
+    res.setHeader('Access-Control-Allow-Origin' , '*' )
+    next()
+})
 
 // Routes
 app.use ( apiRoutes )
