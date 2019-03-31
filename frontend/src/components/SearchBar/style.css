@@ -1,7 +1,13 @@
+.searchbar {
+    display: grid;
+    border-bottom: 3px solid #00897B;
+    grid-auto-flow: column;
+    grid-gap: 10px;
+}
+
 #search {
     width: 100%;
     border: none;
-    border-bottom: 3px solid #00897B;
     padding: 8px 0 ;
     font-size: 20px;
     padding-left: 10px;

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import './style.css'
@@ -19,7 +19,7 @@ const Card = function ({ movie }) {
         }
     }
     // renders the component
-    const { Title, Type, imdbRating, Website, Genre, Released, Plot, Poster } = movie
+    const { Title, Type, imdbRating, Genre, Released, Poster } = movie
 
     return (
         <Link to={Title || '/'} className="card-link" >
