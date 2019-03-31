@@ -1,3 +1,4 @@
-# React-Based Web Application using a RESTful Nodejs API.
+# React/Redux-Based Application using a RESTful Nodejs API.
 
-# NodeJS API - Implementation
+### RESTful API
+
