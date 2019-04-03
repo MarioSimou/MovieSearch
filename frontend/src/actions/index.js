@@ -37,4 +37,11 @@ const filterMovies = value => ( dispatch, getState ) => {
 
 }
 
-export { requestMovies , filterMovies , isFiltering }
+// This action loads the user when he/she login to the page
+const loggedUser = user => ({
+    type: T.STORE_LOGGED_USER,
+    payload: { user }
+})
+
+
+export { requestMovies , filterMovies , isFiltering , loggedUser }

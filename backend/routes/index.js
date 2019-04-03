@@ -1,7 +1,13 @@
 const Router = require('express-promise-router'),
       router = new Router(),
       { hasValue } = require('../util/index'),
-      { HttpError } = require('../models/Error')
+      { HttpError } = require('../models/Error'),
+      crypto = require('crypto');
+
+// Redirection link to /movies
+router.get('/' , ( req , res , next ) => {
+    res.redirect( 301 , '/movies')
+} )
 
 // GET /movies 
 router.get('/movies', async (req, res , next ) => {
@@ -10,7 +16,11 @@ router.get('/movies', async (req, res , next ) => {
         // movies in the database
         const { rows } = await connection.query({ text : 'SELECT data as movie FROM movies'  })
         // response
-        if( hasValue( rows )) res.status( 200 ).json( rows )
+        if( hasValue( rows )) {
+            req.session.user = { 'sid' : crypto.pseudoRandomBytes( 30 ).toString( 'hex') }
+            console.log(res.get('set-cookie'))
+            res.status( 200 ).json( rows )
+        }
         else throw new HttpError('Undefined record')
     } catch( e ) {
         // updates the error object with a status code
