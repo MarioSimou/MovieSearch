@@ -56,33 +56,8 @@ module.exports = {
                 return false
         }
     },
-
-    // evaluateErrorObject: e => {
-    //     let statusCode = 400;
-    //     switch (e.name) {
-    //         case 'Error':
-    //             statusCode = 404
-    //             break;
-    //         case 'SyntaxError':
-    //             statusCode = 404
-    //             break;
-    //         case 'ReferenceError':
-    //             statusCode = 404
-    //             break;
-    //         case 'EvalError':
-    //             statusCode = 404
-    //             break;
-    //         case 'TypeError':
-    //             statusCode = 404
-    //             break;
-    //         default:
-    //             statusCode = 404;
-    //             break;
-    //     }
-
-    //     // updates error object
-    //     e.statusCode = statusCode
-    //     return e
-
-    // }
+    // returns an error message, which will be returned to the client
+    createMessage : ( header , content , type ) => {
+        return { message : { show : true , header , content , type } }
+    },
 }

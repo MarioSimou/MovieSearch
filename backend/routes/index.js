@@ -2,7 +2,10 @@ const Router = require('express-promise-router'),
       router = new Router(),
       { hasValue } = require('../util/index'),
       { HttpError } = require('../models/Error'),
-      crypto = require('crypto');
+      { createMessage } = require('../util/index'),
+      { validationResult }  = require('express-validator/check'),
+      { compare , hash } = require('bcryptjs'),
+      { validateRegistration , validateLogin } = require('../middlewares/validation')
 
 // Redirection link to /movies
 router.get('/' , ( req , res , next ) => {
@@ -17,8 +20,6 @@ router.get('/movies', async (req, res , next ) => {
         const { rows } = await connection.query({ text : 'SELECT data as movie FROM movies'  })
         // response
         if( hasValue( rows )) {
-            req.session.user = { 'sid' : crypto.pseudoRandomBytes( 30 ).toString( 'hex') }
-            console.log(res.get('set-cookie'))
             res.status( 200 ).json( rows )
         }
         else throw new HttpError('Undefined record')
@@ -58,5 +59,50 @@ router.get('/movies/actor/:actor' , async ( req ,res ,next ) => {
     }
 })
 
+// POST /login
+router.post('/login' , validateLogin , async ( req , res , next ) => {
+    let message;
+    const errors = validationResult( req )
+
+        if( errors.isEmpty() ){
+            const { user } = req
+            delete req.user
+            // set JWT token
+
+            // creates message that will be returned
+            message = createMessage( 'Successful Registration' , 'Welcome to our site' , 'positive')
+            
+            // response
+            res.send({ statusCode : 200 , ...message , errors : null })    
+        } else {
+            const e = errors.array()
+            const message = createMessage('Unsuccessful registration' , e[0].msg  , 'negative')
+            res.send({ statusCode : 400 , ...message , errors : e })
+        }
+})
+
+// POST /register
+router.post('/register' ,  validateRegistration ,  async ( req , res , next ) => {
+    let message;
+    const errors = validationResult( req )
+
+        if( errors.isEmpty() ){
+            const { connection } = process
+            const { username , email , password } = req.body
+            // password hashing
+            const hashedPassword = await hash( password , 12 ) 
+            // store user to db
+            const r = await connection.query('INSERT INTO users( username , email , password) VALUES( $1 , $2 , $3 )' , [ username , email ,hashedPassword ])
+            // creates message that will be returned
+            message = createMessage( 'Successful Registration' , 'Welcome to our site' , 'positive')
+            
+            // response
+            res.send({ statusCode : 200 , ...message , errors : null })    
+        } else {
+            const e = errors.array()
+            const message = createMessage('Unsuccessful registration' , e[0].msg  , 'negative')
+            res.send({ statusCode : 400 , ...message , errors : e })
+        }
+})
 
 module.exports = router; 

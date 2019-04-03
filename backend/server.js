@@ -12,7 +12,9 @@ const express = require('express'),
 // allow cookie parsing functionality
 app.use( cookieParser() )
 
-      // Content-Type : application/json
+// Content-Type : x-www-form-urlencoded
+app.use( bodyParser.urlencoded({ extended : true })) // extended : true -> qs
+// Content-Type : application/json
 app.use( bodyParser.json( ) )
 
 // embed session storage functionality
