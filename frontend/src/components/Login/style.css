@@ -1,0 +1,27 @@
+.app > .login-wrapper {
+    padding: 20px;
+    max-height: 93vh;
+    min-height: 93vh;
+    background: url('../../imgs/cover.jpeg');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    -webkit-filter: brightness( 0.9 );
+    filter: brightness(0.9 ); 
+}
+
+.login-form {
+    width: 100%;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.7 );
+    padding: 20px;
+    border-radius: 8px;
+}
+.login-form > form > .header {
+    text-align: center;
+}

@@ -28,4 +28,13 @@ const isFilteringReducer = ( state = false , action ) => {
     }
 }
 
-export default combineReducers({ loadMovies ,  filterRootObject , isFilteringReducer })
+const updateAuthReducer = ( state = {}  , action ) => {
+    switch( action.type ){
+        case T.UPDATE_AUTH_OBJECT:
+            return { ...state , ...action.payload }
+        default:
+            return  state
+    }
+}
+
+export default combineReducers({ loadMovies ,  filterRootObject , isFilteringReducer , updateAuthReducer })

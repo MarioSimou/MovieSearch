@@ -5,7 +5,8 @@ const Router = require('express-promise-router'),
       { createMessage } = require('../util/index'),
       { validationResult }  = require('express-validator/check'),
       { compare , hash } = require('bcryptjs'),
-      { validateRegistration , validateLogin } = require('../middlewares/validation')
+      { validateRegistration , validateLogin } = require('../middlewares/validation'),
+      jwt = require('jsonwebtoken');
 
 // Redirection link to /movies
 router.get('/' , ( req , res , next ) => {
@@ -67,7 +68,18 @@ router.post('/login' , validateLogin , async ( req , res , next ) => {
         if( errors.isEmpty() ){
             const { user } = req
             delete req.user
+            
+            const { Authentication } = req.headers
             // set JWT token
+            console.log(Authentication)
+            console.log(req.headers)
+            try {
+                const isVerified = jwt.verify( 'some token' , process.env.API_JWT_SECRET )
+            } catch( e ){
+                // ertrurn errors
+                const message = createMessage('Unsuccessful registration' , 'Invalid token'  , 'negative')
+                res.send({ statusCode : 400 , ...message })
+            }
 
             // creates message that will be returned
             message = createMessage( 'Successful Registration' , 'Welcome to our site' , 'positive')
@@ -85,19 +97,23 @@ router.post('/login' , validateLogin , async ( req , res , next ) => {
 router.post('/register' ,  validateRegistration ,  async ( req , res , next ) => {
     let message;
     const errors = validationResult( req )
-
+    
         if( errors.isEmpty() ){
             const { connection } = process
             const { username , email , password } = req.body
+
             // password hashing
             const hashedPassword = await hash( password , 12 ) 
             // store user to db
-            const r = await connection.query('INSERT INTO users( username , email , password) VALUES( $1 , $2 , $3 )' , [ username , email ,hashedPassword ])
+            await connection.query('INSERT INTO users( username , email , password) VALUES( $1 , $2 , $3 )' , [ username , email ,hashedPassword ])
+            const { rows } = await connection.query('SELECT id, email FROM users WHERE email=$1' , [ email ])
             // creates message that will be returned
             message = createMessage( 'Successful Registration' , 'Welcome to our site' , 'positive')
-            
+            // a jwt token is signed and returned
+            const token = jwt.sign( { ...rows[0] } , process.env.API_JWT_SECRET , {  expiresIn : '1hr'} )
+
             // response
-            res.send({ statusCode : 200 , ...message , errors : null })    
+            res.send({ statusCode : 200 , ...message  , data : { token , ...rows[0] } , errors : null })    
         } else {
             const e = errors.array()
             const message = createMessage('Unsuccessful registration' , e[0].msg  , 'negative')

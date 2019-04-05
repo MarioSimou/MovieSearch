@@ -42,6 +42,11 @@ const loggedUser = user => ({
     type: T.STORE_LOGGED_USER,
     payload: { user }
 })
+// action that updates the authentication token when the user login
+const updateAuthObject = auth => ({
+    type : T.UPDATE_AUTH_OBJECT,
+    payload: { ...auth }
+})
 
 
-export { requestMovies , filterMovies , isFiltering , loggedUser }
+export { requestMovies , filterMovies , isFiltering , loggedUser , updateAuthObject }

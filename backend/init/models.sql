@@ -14,6 +14,9 @@ ALTER TABLE users ALTER COLUMN email SET NOT NULL;
 ALTER TABLE users ALTER COLUMN password SET NOT NULL;
 -- default value
 ALTER TABLE users ALTER COLUMN create_date SET default CURRENT_TIMESTAMP;
+-- INDEXES
+CREATE INDEX users_email_index ON uses USING btree( email );
+
 -- MOVIES
 CREATE TABLE movies(
     id serial , 
