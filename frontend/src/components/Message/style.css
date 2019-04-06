@@ -9,7 +9,7 @@
     padding: 12px 10px;
     border-radius: 0;
 }
+.add-movie-wrapper > .message-wrapper,
 .wrapper > .message-wrapper {
     position: static;
-    margin-top: 1px;
 }

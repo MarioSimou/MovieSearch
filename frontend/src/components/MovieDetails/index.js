@@ -43,7 +43,7 @@ class MovieDetails extends Component {
         const { [title]:movie } = this.props.movies
 
         if( movie ){
-            const { Title, Actors , Ratings , Runtime , Type, imdbRating, Genre,  Plot ,  Released, Poster } = movie
+            const { Title, Actors , Ratings , Runtime , Type, Genre,  Plot ,  Released, Poster } = movie
             
     
             return (
@@ -70,7 +70,7 @@ class MovieDetails extends Component {
                                             <AccordionSub isActive="true" header="What is the plot?" content={ Plot } />
                                             <AccordionSub header="Who were the actors?" content={ Actors } />
                                             <AccordionSub header="How long the movie it takes?" content={ Runtime } />
-                                            <AccordionSub header="What was the rating?" content={  [...Ratings , { 'Value' : imdbRating , 'Source' : 'Imdb' } ] } />
+                                            <AccordionSub header="What was the rating?" content={  Ratings } />
                                         </div>
                                     </div>
                                     <div className="extra">

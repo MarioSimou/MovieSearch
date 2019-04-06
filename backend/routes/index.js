@@ -112,4 +112,50 @@ router.post('/register' ,  validateRegistration ,  async ( req , res , next ) =>
         }
 })
 
+// POST /movies/add
+router.post('/movies/add' , async ( req , res ) => {
+    const { authorization } = req.headers
+    let message;
+
+    if( authorization ){
+        // extracts the authorization token
+        const token = authorization.replace( /Bearer\s+/ , '')
+        try {
+            const decoded = jwt.verify( token , process.env.API_JWT_SECRET )
+            if ( decoded ){
+                const { connection } = process
+                const { title , type , released , runtime , genre , actors , imdb ,rottenTomatoes , metacritic, poster , plot } = req.body
+                const data = JSON.stringify({ 
+                    'Title' : title,
+                    'Type' : type,
+                    'Released' : released,
+                    'Runtime' : `${runtime} min`,
+                    'Genre' : genre,
+                    'Actors': actors,
+                    'Plot': plot,
+                    'Poster': poster,
+                    'Ratings' : [ { 'Value' : `${ imdb }/10` , 'Source' : 'Internet Movie Database'} , 
+                                  { 'Value' : `${ rottenTomatoes }/100` , 'Source' : 'Rotten Tomatoes'},
+                                  { 'Value' : `${metacritic}/100` , 'Source' : 'Metacritic'}
+                                ]
+
+                })       
+                // updates the database
+                await connection.query('INSERT INTO movies( movie_title , data ) VALUES ( $1 , $2 )' , [ title , data ])
+                
+                // creates message that will be returned
+                message = createMessage( 'Successful Registration' , 'Movie has been successfully submitted' , 'positive')
+                // response
+                res.send({ statusCode : 200 , ...message }) 
+            }
+        } catch ( e ){
+            message = createMessage('Unsuccessful registration' , e.message  , 'negative')
+            res.send({ statusCode : 400 , ...message })
+        }
+    } else {
+        message = createMessage('Unsuccessful registration' , 'Unauthorized user'  , 'negative')
+        res.send({ statusCode : 401 , ...message })
+    }
+})
+
 module.exports = router; 

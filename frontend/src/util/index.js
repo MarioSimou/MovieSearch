@@ -7,9 +7,13 @@ export default (() => ({
         return url.replace(/(http|https):\/\/.*?(?=\/)/, '')
     },
     /*
+      Method that checks if a given value has actually a value
+     */
+    hasValue : function( v ) {
+         /*
         Method that returns existing data types in JS
-    */
-    getJSTypes : () => ({
+        */
+        const JS_TYPES = (() => ({
         String: '[object String]',
         Array: '[object Array]',
         Object: '[object Object]',
@@ -17,12 +21,7 @@ export default (() => ({
         Number: '[object Number]',
         Undefined: '[object Unfefined]',
         Null: '[object Null]'
-    }),
-    /*
-      Method that checks if a given value has actually a value
-     */
-    hasValue : function( v ) {
-        const JS_TYPES = this.getJSTypes()
+        }))();
         const type = Object.prototype.toString.call(v)
     
         switch (type) {
@@ -38,7 +37,7 @@ export default (() => ({
         }
     },
     createErrorMessage : ( header , content ) => {
-        return { message : { show : true , header , content , type : 'error' } }
+        return { show : true , header , content , type : 'error' }
     },
     whichHasErrors : ( e , v ) => {
         return e.reduce( ( a , s ) => ({ ...a , [s.param]: { ...v[s.param] , hasError : true } } ),{})       
@@ -74,6 +73,27 @@ export default (() => ({
 
 
         return errorMessages;
+    },
+    extractTagValues : function( ...args ){
+        const { hasValue } = this // extract the hasValue utitity
+        return args.map( v => {
+            switch( v.tagName.toLowerCase()){
+                case 'input':
+                case 'textarea':
+                    if( hasValue( v.value ) ) return v.value 
+                    else return null
+                case 'select':
+                    const value = Array.from( v.querySelectorAll('option:checked') ).map( v => v.value ).toString()
+                    if ( hasValue( value ) ) return value
+                    else return null
+                case 'radio':
+                case 'checkbox':
+                    if( hasValue( v.value ) )return v.value
+                    else return null
+                default:
+                    return null
+            }
+        })
     }
 }))()
 

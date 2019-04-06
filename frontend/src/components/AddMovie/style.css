@@ -1,0 +1,42 @@
+.add-movie-wrapper {
+    min-width: 100vw;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 94.7vh;
+    background: url('../../imgs/movie.jpeg') center center no-repeat /cover;
+}
+
+.add-movie-wrapper > .add-movie {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.add-movie-wrapper > .add-movie > #add-movie-form {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.80 );
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.add-movie-wrapper > .add-movie > #add-movie-form ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 4px;
+}
+
+.add-movie-wrapper > .add-movie > #add-movie-form ul ul li:first-child {
+   width: 200px;
+}
+/* add movie heder */
+.add-movie-wrapper > .add-movie > #add-movie-form .ui.header {
+    text-align: center;
+    padding-bottom: 10px;
+}

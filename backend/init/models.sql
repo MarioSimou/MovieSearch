@@ -28,5 +28,7 @@ ALTER TABLE movies ADD CONSTRAINT movies_pk PRIMARY KEY (id);
 ALTER TABLE movies ADD CONSTRAINT movies_uniques UNIQUE ( movie_title , data );
 ALTER TABLE movies ALTER COLUMN data SET NOT NULL;
 ALTER TABLE movies ALTER COLUMN movie_title SET NOT NULL;
+-- unique
+ALTER TABLE movies ADD CONSTRAINT movie_title_uniq UNIQUE (movie_title);
 -- index
 CREATE INDEX movies_data_index ON movies USING btree( data );
