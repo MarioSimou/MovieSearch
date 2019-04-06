@@ -1,48 +1,81 @@
 import React , { Component } from 'react'
 import { Link } from 'react-router-dom'
-
+import { connect } from 'react-redux'
+import UTIL from '../../util'
+// actions
+import { updateSite , flushAuthObject } from '../../actions'
 // style
 import './style.css'
 
 class Navbar extends Component {
+    onClickLink = e => {
+        this.props.updateSite( UTIL.getPathname( e.target.href ) )
+    }
+    onClickLogOut = e => {
+        window.location.href = '/'
+    }
+
+    decideAuthBtns = ( { token }) => {
+        if ( !token ){
+            return(
+                <div className="right menu">
+                    <Link to="/login"
+                            className="item"
+                            onClick={ e => this.onClickLink( e ) }
+                        >
+                            Login
+                    </Link>
+                    <Link to="/register"
+                            className="item"
+                            onClick={ e => this.onClickLink( e ) }
+                        >
+                            Register
+                    </Link>
+                </div>
+            )
+        } else {
+            return (
+                <div className="right menu">
+                    <Link to="#"
+                          className="item"
+                          onClick={ e => { this.onClickLogOut( e ) } }
+                    >
+                        Logout
+                    </Link>
+                </div>
+            )
+        }
+    }
+
     render(){
+        const { auth } = this.props
         return (
             <div className="ui teal medium stackable menu">
                 <Link to="/"
                       className="item"
+                      onClick={ e => this.onClickLink( e ) }
                 >
                     <i className="film icon"></i>
                 </Link>
                 <Link to="/"
                     className="item"
+                    onClick={ e => this.onClickLink( e ) }
                 >
-                    Home
+                    <i className="home icon"></i>Home
                 </Link>
-                <Link to="/contact"
+                <Link to="/movies/add"
                     className="item"
+                    onClick={ e => this.onClickLink( e ) }
                 >
-                    Contact                    
+                    <i className="plus icon"></i> Add Movie                    
                 </Link>
-                <div className="right menu">
-                    {/* <div className="ui left icon transparent input">
-                        <i className="search icon"></i>
-                        <input type="text" placeholder="search" />
-                    </div> */}
-                    <Link to="/login"
-                          className="item"
-                    >
-                        Login
-                    </Link>
-                    <Link to="/register"
-                          className="item"
-                    >
-                        Register
-                    </Link>
-                </div>
-
+                { this.decideAuthBtns( auth || {} ) }
             </div>
         )
     }
 }
 
-export default Navbar
+const mapStateToProps  = state => {
+    return { site : state.updatePageReducer , auth : state.updateAuthReducer  }
+}
+export default connect( mapStateToProps , { updateSite , flushAuthObject })( Navbar )

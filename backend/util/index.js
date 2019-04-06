@@ -59,5 +59,5 @@ module.exports = {
     // returns an error message, which will be returned to the client
     createMessage : ( header , content , type ) => {
         return { message : { show : true , header , content , type } }
-    },
+    }
 }

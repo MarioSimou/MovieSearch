@@ -1,6 +1,6 @@
 
 
-.home > .cards-wrapper > .card-link > .card {
+.home-site > .cards-wrapper > .card-link > .card {
     width: 100%;
     height: 100%;
     display: grid;
@@ -9,11 +9,11 @@
     min-height: 400px;
     box-shadow: 2px 4px 15px 8px rgba(0,0,0,0.25);
 }
-.home > .cards-wrapper > .card-link > .card > .main {
+.home-site > .cards-wrapper > .card-link > .card > .main {
     position: relative;
 }
 
-.home > .cards-wrapper > .card-link > .card > .main > .header {
+.home-site > .cards-wrapper > .card-link > .card > .main > .header {
     width: 100%;
     background: rgba( 255 , 255 , 255 , 0.5 );
     height: 30px;
@@ -25,7 +25,7 @@
     font-size: 18px;
 }
 
-.home > .cards-wrapper > .card-link > .card > .main > .desc {
+.home-site > .cards-wrapper > .card-link > .card > .main > .desc {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -38,7 +38,7 @@
     height: 50px;
 }
 
-.home > .cards-wrapper > .card-link > .card > .main > .desc > .meta {
+.home-site > .cards-wrapper > .card-link > .card > .main > .desc > .meta {
     display: grid;
     grid-auto-flow: column;
     grid-gap: 10px;
@@ -50,7 +50,7 @@
 
 }
 
-.home > .cards-wrapper > .card-link > .card > .main > .desc > .type {
+.home-site > .cards-wrapper > .card-link > .card > .main > .desc > .type {
     padding: 8px 12px;
     animation-name: alert;
     animation-duration: 1s;
@@ -83,18 +83,18 @@
 /* 
 .home > .cards-wrapper > .card-link > .card > .main > .de */
 
-.home > .cards-wrapper > .card-link > .card > .extra {
+.home-site > .cards-wrapper > .card-link > .card > .extra {
     padding: 0 10px;
 }
 
-.home > .cards-wrapper > .card-link > .card > .extra > .genre-wrapper {
+.home-site > .cards-wrapper > .card-link > .card > .extra > .genre-wrapper {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     height: 100%;
 }   
 
-.home > .cards-wrapper > .card-link > .card > .extra > .genre-wrapper > * {
+.home-site > .cards-wrapper > .card-link > .card > .extra > .genre-wrapper > * {
     padding: 8px 12px;
     border-radius: 6px;
     background: rgba(0,150,136 ,1);

@@ -1,0 +1,14 @@
+.message-wrapper {
+    position: absolute;
+    box-sizing: border-box;
+    top: 0px;
+    min-width: 100%;
+    max-width: 100%;
+}
+.message-wrapper > .message {
+    padding: 12px 10px;
+    border-radius: 0;
+}
+.wrapper > .message-wrapper {
+    position: static;
+}

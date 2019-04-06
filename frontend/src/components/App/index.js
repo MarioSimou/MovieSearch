@@ -12,7 +12,7 @@ const App = props => {
     return (
         <div className="app">
             <BrowserRouter>
-                    <Navbar/>
+                <Navbar/>
                 <Switch>
                     <Route exact path="/" component={ Home } />
                     <Route exact path="/login" component={ Login } />

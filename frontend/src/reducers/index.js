@@ -32,9 +32,29 @@ const updateAuthReducer = ( state = {}  , action ) => {
     switch( action.type ){
         case T.UPDATE_AUTH_OBJECT:
             return { ...state , ...action.payload }
+        case T.FLUSH_AUTH:
+            return {}
         default:
             return  state
     }
 }
 
-export default combineReducers({ loadMovies ,  filterRootObject , isFilteringReducer , updateAuthReducer })
+const setMessageReducer = ( state = {} , action ) => {
+    switch( action.type ){
+        case T.LOAD_MESSAGE :
+            return { ...state , ...action.payload }
+        default:
+            return state
+    }
+}
+
+const updatePageReducer = ( page = '/' , action ) => {
+    switch( action.type ){
+        case T.UPDATE_PAGE:
+            return action.payload
+        default:
+            return page
+    }
+}
+
+export default combineReducers({ loadMovies ,  filterRootObject , isFilteringReducer , updateAuthReducer , setMessageReducer , updatePageReducer })

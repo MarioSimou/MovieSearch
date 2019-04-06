@@ -4,7 +4,7 @@ export default (() => ({
         Method that returns the relative path of a given url  
     */
     getPathname : url => {
-        return url.replace(/(http|https):\/\/.*(?=\/)/, '')
+        return url.replace(/(http|https):\/\/.*?(?=\/)/, '')
     },
     /*
         Method that returns existing data types in JS
@@ -75,6 +75,5 @@ export default (() => ({
 
         return errorMessages;
     }
-
 }))()
 

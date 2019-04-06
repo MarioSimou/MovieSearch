@@ -6,7 +6,7 @@ import qs from 'qs'
 // Components
 import Message from '../Message'
 // actions
-import { loggedUser } from '../../actions' 
+import { loggedUser , updateAuthObject , setMessage , updateSite } from '../../actions' 
 // styles
 import './style.css'
 
@@ -25,12 +25,6 @@ class Login extends Component {
                 hasValue: false,
                 hasTouch: false,
                 hasError: false,
-            },
-            message: {
-                show: false,
-                content: '',
-                header: '',
-                type: null
             }
         }
     }
@@ -52,44 +46,30 @@ class Login extends Component {
             Content-Type: x-www-form-urlencoded
         */
         const { email , password } = this.state
-        const { data:res } = await API.post( '/login' , qs.stringify({
+        const { data: {  statusCode , message , data , errors } } = await API.post( '/login' , qs.stringify({
              email : email.value , 
              password : password.value , 
         }) )
 
         // logic based on the response
-        switch( res.statusCode >= 0 && res.statusCode < 400){
+        switch( statusCode >= 200 && statusCode < 400){
             case true:
-                this.setState( { ...res } );
-                this.resetValues();
+                // redirects to / page
+                this.props.updateSite('/')
+                // sets message
+                this.props.setMessage( message )
+                // set authentication object
+                this.props.updateAuthObject( data )
+                // redirection
+                this.props.history.push('/')
                 break;
             default: 
-                // display errors object
-                this.setState( { ...UTIL.whichHasErrors( res.errors , this.state ) , ...res  } );
+                this.props.setMessage( message );
+                this.setState( { ...UTIL.whichHasErrors( errors , this.state ) , ...message  } );
                 break;
         }
     }
-    // Routines
-    resetValues = () => {
-        this.setState({
-            email: {
-                value: '',
-                hasValue: false,
-                hasTouch: false,
-                hasError: false,
-            },
-            password: {
-                value: '',
-                hasValue: false,
-                hasTouch: false,
-                hasError: false,
-            }
-        })
-    }
-    resetMessage = s => {
-        this.setState( {message : { show : s , header : '' , content : '' , type : null } })
-    }
-
+    
     // returns the registration form JSX
     getRegistrationForm = () => {
         const { email, password } = this.state
@@ -130,7 +110,8 @@ class Login extends Component {
     }
 
     render() {
-        const { message } = this.state
+        const { message } = this.props
+        
         if (!message.show) {
             return (
                 <div className="login-wrapper">
@@ -141,7 +122,7 @@ class Login extends Component {
             return (
                 <div className="login-wrapper">
                     <div className="message-wrapper">
-                        <Message message={message} showMessage={ this.resetMessage } />
+                        <Message msg={message} />
                     </div>
                     {this.getRegistrationForm()}
                 </div>)
@@ -150,7 +131,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => {
-    return { user : state.storeLoggedUser }
+    return { user : state.storeLoggedUser , auth : state.updateAuthReducer , message : state.setMessageReducer.msg || state.setMessageReducer }
 }
 
-export default connect( mapStateToProps , { loggedUser } )( Login )
+export default connect( mapStateToProps , { loggedUser , updateAuthObject , setMessage , updateSite } )( Login )

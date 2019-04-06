@@ -47,6 +47,27 @@ const updateAuthObject = auth => ({
     type : T.UPDATE_AUTH_OBJECT,
     payload: { ...auth }
 })
+// clears the authentication object
+const flushAuthObject = () => ({
+    type : T.FLUSH_AUTH,
+    payload : {}
+})
+
+// action that loads a message to store
+const setMessage = msg => ({
+    type : T.LOAD_MESSAGE,
+    payload : { msg }
+})
+
+const updateSite = site => dispatch => {
+    // resets any message when the page updates
+    dispatch( setMessage({ show: false, header: '', content: '', type: null }) );
+
+    dispatch({
+        type : T.UPDATE_PAGE,
+        payload : site    
+    })
+}
 
 
-export { requestMovies , filterMovies , isFiltering , loggedUser , updateAuthObject }
+export { requestMovies , filterMovies , isFiltering , loggedUser , updateAuthObject , setMessage , updateSite , flushAuthObject }

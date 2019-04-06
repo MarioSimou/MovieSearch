@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Card from '../Card'
 import SearcBar from '../SearchBar'
 import Header from '../Header'
+import Message from '../Message'
 // actions
 import { requestMovies } from '../../actions'
 
@@ -60,8 +61,18 @@ class Home extends Component {
         }
     }
 
+    loadMessageIfExist = ( message ) => {
+        if( message.show ){
+            return (
+                <div className="message-wrapper">
+                    <Message msg={message} />
+                </div>
+            )
+        } else return ( <div></div>)
+    }
+
     render() {
-        const { movies, filteredObject } = this.props
+        const { movies, filteredObject , message } = this.props
         const { init , hasTyped  } = this.state
         const fn = Object.values( filteredObject ).length // size of filtered object
 
@@ -69,7 +80,7 @@ class Home extends Component {
             case true:
                 // initialization process
                 return (
-                    <div className="home">
+                    <div className="home-site">
                         <div className="ui active massive loader"></div>
                     </div>
                 )
@@ -78,35 +89,44 @@ class Home extends Component {
                     case true:
                         if( fn === 0 ){
                             return (
-                                <div className="home">
-                                    <Header />
-                                    <div className="searchbar-wrapper">
-                                        <SearcBar hasTyped={ this.hasTyped } />
-                                    </div>
-                                    <div className="cards-wrapper">
-                                        <h2 className="ui header">No movies have been found</h2>
+                                <div className="wrapper">
+                                    { this.loadMessageIfExist( message ) }
+                                    <div className="home-site">
+                                        <Header />
+                                        <div className="searchbar-wrapper">
+                                            <SearcBar hasTyped={ this.hasTyped } />
+                                        </div>
+                                        <div className="cards-wrapper">
+                                            <h2 className="ui header">No movies have been found</h2>
+                                        </div>
                                     </div>
                                 </div>
                             )
                         } else {
                             return (
-                                <div className="home">
-                                    <Header />
-                                    <div className="searchbar-wrapper">
-                                        <SearcBar hasTyped={ this.hasTyped } />
+                                <div className="wrapper">
+                                    { this.loadMessageIfExist( message ) }
+                                    <div className="home-site">
+                                        <Header />
+                                        <div className="searchbar-wrapper">
+                                            <SearcBar hasTyped={ this.hasTyped } />
+                                        </div>
+                                        {this.renderCards( filteredObject )}
                                     </div>
-                                    {this.renderCards( filteredObject )}
                                 </div>
                             ) 
                         }
                     case false:
                         return (
-                            <div className="home">
-                                <Header />
-                                <div className="searchbar-wrapper">
-                                    <SearcBar hasTyped={ this.hasTyped } />
+                            <div className="wrapper">
+                                { this.loadMessageIfExist( message ) }
+                                <div className="home-site">
+                                    <Header />
+                                    <div className="searchbar-wrapper">
+                                        <SearcBar hasTyped={ this.hasTyped } />
+                                    </div>
+                                    {this.renderCards( movies )}
                                 </div>
-                                {this.renderCards( movies )}
                             </div>
                         )
                     default:
@@ -121,7 +141,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
-    return { movies: state.loadMovies, filteredObject: state.filterRootObject }
+    return { movies: state.loadMovies, filteredObject: state.filterRootObject , message : state.setMessageReducer.msg || state.setMessageReducer  }
 }
 
 export default connect(mapStateToProps, { requestMovies })(Home)

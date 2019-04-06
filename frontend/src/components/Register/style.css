@@ -1,7 +1,7 @@
 .app > .register-wrapper {
     padding: 20px;
-    max-height: 93.5vh;
-    min-height: 93.5vh;
+    max-height: 94.7vh;
+    min-height: 94.7vh;
     background: url('../../imgs//cover.jpeg');
     background-attachment: fixed;
     background-position: center;
@@ -13,18 +13,6 @@
     position: relative;
     -webkit-filter: brightness( 0.9 );
     filter: brightness(0.9 ); 
-}
-
-.app .message-wrapper {
-    position: absolute;
-    box-sizing: border-box;
-    top: 0px;
-    min-width: 100%;
-    max-width: 100%;
-}
-.app .message-wrapper > .message {
-    padding: 12px 10px;
-    border-radius: 0;
 }
 
 .register-form {

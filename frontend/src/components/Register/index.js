@@ -6,7 +6,7 @@ import qs from 'qs'
 // Components
 import Message from '../Message'
 // actions
-import { loggedUser  , updateAuthObject } from '../../actions'
+import { loggedUser  , updateAuthObject , setMessage , updateSite } from '../../actions'
 // styles
 import './style.css'
 
@@ -37,12 +37,6 @@ class Register extends Component {
                 hasValue: false,
                 hasTouch: false,
                 hasError: false
-            },
-            message: {
-                show: false,
-                content: '',
-                header: '',
-                type: null
             }
         }
     }
@@ -70,7 +64,7 @@ class Register extends Component {
         // POST /register http://localhost:3001/register
         // Content-Type: x-www-form-urlencoded
         const { username , email , password , confPassword } = this.state
-        const { data:res } = await API.post( '/register' , qs.stringify({
+        const { data: {  statusCode , message , data , errors } } = await API.post( '/register' , qs.stringify({
              username : username.value , 
              email : email.value , 
              password : password.value , 
@@ -78,18 +72,17 @@ class Register extends Component {
         }) )
 
         // logic based on the response
-        switch( res.statusCode >= 200 && res.statusCode < 400){
+        switch( statusCode >= 200 && statusCode < 400){
             case true:
-                const { message , data } = res
-
-                this.setState( { message } );        
+                this.props.updateSite('/')
+                this.props.setMessage( message )
                 this.props.updateAuthObject( data )
-                this.resetValues();
+                // redirects to / page
+                this.props.history.push('/')
                 break;
             default: 
-                const { errors } = res
-                // display errors object
-                this.setState( { ...UTIL.whichHasErrors( errors , this.state ) , ...res  } );
+                this.props.setMessage( message )
+                this.setState( { ...UTIL.whichHasErrors( errors , this.state ) , ...message  } );
                 break;
         }
     }
@@ -120,9 +113,6 @@ class Register extends Component {
             hasTouch: false,
             hasError: false
         }})
-    }
-    resetMessage = s => {
-        this.setState({ message: { show: s, header: '', content: '', type: null } })
     }
 
     // returns the JSX of registration form
@@ -187,7 +177,7 @@ class Register extends Component {
     }
 
     render() {
-        const { message } = this.state
+        const { message } = this.props
 
         // Conditional rendering based on the returned message
         if (!message.show) {
@@ -200,7 +190,7 @@ class Register extends Component {
             return (
                 <div className="register-wrapper">
                     <div className="message-wrapper">
-                        <Message message={message} showMessage={this.resetMessage} />
+                        <Message msg={message} />
                     </div>
                     {this.getRegistrationForm()}
                 </div>)
@@ -210,7 +200,7 @@ class Register extends Component {
 }
 
 const mapStateToProps = state => {
-    return {  user : state.storeLoggedUser , auth : state.updateAuthReducer }
+    return {  user : state.storeLoggedUser , auth : state.updateAuthReducer , message : state.setMessageReducer.msg || state.setMessageReducer }
 }
 
-export default connect( mapStateToProps , { loggedUser , updateAuthObject })( Register )
+export default connect( mapStateToProps , { loggedUser , updateAuthObject , setMessage , updateSite })( Register )

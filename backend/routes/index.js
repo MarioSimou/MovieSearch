@@ -66,26 +66,17 @@ router.post('/login' , validateLogin , async ( req , res , next ) => {
     const errors = validationResult( req )
 
         if( errors.isEmpty() ){
-            const { user } = req
+            const { id , email  } = req.user
             delete req.user
             
-            const { Authentication } = req.headers
             // set JWT token
-            console.log(Authentication)
-            console.log(req.headers)
-            try {
-                const isVerified = jwt.verify( 'some token' , process.env.API_JWT_SECRET )
-            } catch( e ){
-                // ertrurn errors
-                const message = createMessage('Unsuccessful registration' , 'Invalid token'  , 'negative')
-                res.send({ statusCode : 400 , ...message })
-            }
-
+            const token = jwt.sign( { id, email } ,  process.env.API_JWT_SECRET , { expiresIn : '1hr' })
+            
             // creates message that will be returned
             message = createMessage( 'Successful Registration' , 'Welcome to our site' , 'positive')
             
             // response
-            res.send({ statusCode : 200 , ...message , errors : null })    
+            res.send({ statusCode : 200 , ...message , data : { token , email , id } , errors : null })    
         } else {
             const e = errors.array()
             const message = createMessage('Unsuccessful registration' , e[0].msg  , 'negative')
@@ -97,7 +88,7 @@ router.post('/login' , validateLogin , async ( req , res , next ) => {
 router.post('/register' ,  validateRegistration ,  async ( req , res , next ) => {
     let message;
     const errors = validationResult( req )
-    
+
         if( errors.isEmpty() ){
             const { connection } = process
             const { username , email , password } = req.body
