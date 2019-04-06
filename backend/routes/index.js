@@ -70,7 +70,7 @@ router.post('/login' , validateLogin , async ( req , res , next ) => {
             delete req.user
             
             // set JWT token
-            const token = jwt.sign( { id, email } ,  process.env.API_JWT_SECRET , { expiresIn : '1hr' })
+            const token = jwt.sign( { id, email } ,  process.env.API_JWT_SECRET , { expiresIn : Date.now() + 3600000 })
             
             // creates message that will be returned
             message = createMessage( 'Successful Registration' , 'Welcome to our site' , 'positive')
@@ -101,7 +101,7 @@ router.post('/register' ,  validateRegistration ,  async ( req , res , next ) =>
             // creates message that will be returned
             message = createMessage( 'Successful Registration' , 'Welcome to our site' , 'positive')
             // a jwt token is signed and returned
-            const token = jwt.sign( { ...rows[0] } , process.env.API_JWT_SECRET , {  expiresIn : '1hr'} )
+            const token = jwt.sign( { ...rows[0] } , process.env.API_JWT_SECRET , {  expiresIn : Date.now() + 3600000 } )
 
             // response
             res.send({ statusCode : 200 , ...message  , data : { token , ...rows[0] } , errors : null })    

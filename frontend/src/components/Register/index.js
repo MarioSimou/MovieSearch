@@ -77,6 +77,7 @@ class Register extends Component {
                 this.props.updateSite('/')
                 this.props.setMessage( message )
                 this.props.updateAuthObject( data )
+                window.localStorage.setItem('moviesearch.data' , JSON.stringify( data ))
                 // redirects to / page
                 this.props.history.push('/')
                 break;

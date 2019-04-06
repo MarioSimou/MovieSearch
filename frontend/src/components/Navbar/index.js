@@ -12,7 +12,11 @@ class Navbar extends Component {
         this.props.updateSite( UTIL.getPathname( e.target.href ) )
     }
     onClickLogOut = e => {
+        // clears localestorage
+            window.localStorage.removeItem('moviesearch.data')
+        // redirects the user
         window.location.href = '/'
+        
     }
 
     decideAuthBtns = ( { token }) => {

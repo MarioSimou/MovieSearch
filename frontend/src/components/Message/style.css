@@ -11,4 +11,5 @@
 }
 .wrapper > .message-wrapper {
     position: static;
+    margin-top: 1px;
 }

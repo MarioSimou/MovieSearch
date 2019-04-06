@@ -7,7 +7,7 @@ import SearcBar from '../SearchBar'
 import Header from '../Header'
 import Message from '../Message'
 // actions
-import { requestMovies } from '../../actions'
+import { requestMovies , updateAuthObject  } from '../../actions'
 
 // style
 import './style.css'
@@ -20,7 +20,21 @@ class Home extends Component {
     }
     // loads the movies
     componentDidMount() {
+        // request movies 
         this.props.requestMovies()
+
+        try{
+            // json object
+            const d = JSON.parse( window.localStorage.getItem('moviesearch.data') )
+            // if the json token has not expired
+            if ( d && new Date(JSON.parse(atob( d.token.split('.')[1])).exp) > Date.now() ){
+                // set the authenticaiton object
+                this.props.updateAuthObject( d  )
+            }
+        }catch(e ){
+            console.log(e.message)
+        }
+
     }
     // renders the cards of movies
     renderCards = movies => {
@@ -144,4 +158,4 @@ const mapStateToProps = state => {
     return { movies: state.loadMovies, filteredObject: state.filterRootObject , message : state.setMessageReducer.msg || state.setMessageReducer  }
 }
 
-export default connect(mapStateToProps, { requestMovies })(Home)
+export default connect(mapStateToProps, { requestMovies , updateAuthObject })(Home)

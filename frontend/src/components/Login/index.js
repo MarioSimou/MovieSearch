@@ -60,6 +60,7 @@ class Login extends Component {
                 this.props.setMessage( message )
                 // set authentication object
                 this.props.updateAuthObject( data )
+                window.localStorage.setItem('moviesearch.data' , JSON.stringify( data ))
                 // redirection
                 this.props.history.push('/')
                 break;
