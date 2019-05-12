@@ -17,12 +17,19 @@ router.get('/' , ( req , res , next ) => {
 router.get('/movies', async (req, res , next ) => {
     try {
         const { connection } = process
+        const { length , start } = req.query;
+
         // movies in the database
-        const { rows } = await connection.query({ text : 'SELECT data as movie FROM movies'  })
-        // response
-        if( hasValue( rows )) {
-            res.status( 200 ).json( rows )
+        switch( length && start ? true : false ){
+            case true:
+                var { rows } = await connection.query( `SELECT data as movie FROM movies ORDER BY id OFFSET $1 LIMIT $2;` , [  start , length ] )    
+                break;            
+            default:
+                var { rows } = await connection.query({ text : `SELECT data as movie FROM movies ORDER BY id;`  })
+                break;
         }
+        // response
+        if( hasValue( rows )) res.status( 200 ).json( rows )
         else throw new HttpError('Undefined record')
     } catch( e ) {
         // updates the error object with a status code
